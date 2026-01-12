@@ -1,11 +1,13 @@
-#User & Group Permission Management LAB
+                                        User & Group Permission Management LAB
 
 This lab demonstrates hands-on experience with Linux user and group management, directory permissions, umask configuration, SGID, and sticky bit behavior. The tasks were completed in a CCIA environment and reflect practical system administration. 
 
 
-Task A: Account and Group Setup
 
-Step 1: Create Groups
+# Task A: Account and Group Setup
+
+
+### Step 1: Create Groups
 Three groups were created:
 
 employee
@@ -14,9 +16,12 @@ payroll
 
 admin
 
+<img width="1042" height="588" alt="image" src="https://github.com/user-attachments/assets/f80a955f-13be-4a83-baa3-afcc43c29523" />
 
 
-Step 2: Create User Accounts
+
+
+# Step 2: Create User Accounts
 Three user accounts were created with specified home directories:
 
 Sophia – primary group: employee
@@ -27,52 +32,106 @@ Emma – primary group: admin
 
 All users were assigned /bin/bash as their login shell and passwords were configured.
 
-![image alt](https://github.com/adeline566/Linux-Networking-Labs-/blob/83b4b26c40fc9d14396b674f5bdb12d8386eba05/Picture%202.png)
-![image alt](https://github.com/adeline566/Linux-Networking-Labs-/blob/7a25cddac7bcb7565b5c21ee4524d470f946380a/Picture%203.png)
+
+<img width="1042" height="588" alt="image" src="https://github.com/user-attachments/assets/ea457134-4737-45fd-9588-7470873a3de7" />
+
+<img width="1042" height="588" alt="image" src="https://github.com/user-attachments/assets/b6acfaa3-6467-4a30-afd7-4cdd5838f85c" />
 
 
-Step 3: Create Shared Group
+
+# Step 3: Create Shared Group
 A shared group named your_midas (MIDAS ID placeholder) was created and added as a secondary group for Sophia, Olivia, and Emma. Group memberships were verified for each user.
 
-![image alt]
+<img width="1042" height="588" alt="image" src="https://github.com/user-attachments/assets/eabd740c-44c4-4c70-96b9-6f058ee1e9b6" />
 
 
-Step 4: Create Shared Directory
+
+# Step 4: Create Shared Directory
 A shared directory /home/cyse_project was created and assigned ownership to the your_midas group. Directory ownership and permissions were verified.
 
-![image alt]
 
-Step 5: Set Directory Permissions
+<img width="1042" height="588" alt="image" src="https://github.com/user-attachments/assets/7ebeb90c-fb45-477e-8a73-8d8c4d82ba68" />
+
+
+# Step 5: Set Directory Permissions
 Permissions for /home/cyse_project were set to rwxrwx--- using the octal method, ensuring that only members of the shared group could access the directory.
 
-![image alt]
 
-Step 6: Configure Default Permissions (umask)
+<img width="1042" height="588" alt="image" src="https://github.com/user-attachments/assets/be27018f-b6d9-4ec3-8434-2fa8cd44ad52" />
+
+
+# Step 6: Configure Default Permissions (umask)
 The system switched to Sophia’s account. The default permissions were modified using the umask command so that newly created files had permissions of rw-r-----. The umask value and file permissions were verified.
 
-![image alt]
+
+<img width="1042" height="588" alt="image" src="https://github.com/user-attachments/assets/72703fb6-d1c3-41f7-b70f-72d824992d50" />
 
 
-Step 7: Create File
+
+# Step 7: Create File
 A file named Sophia_homework was created in Sophia’s home directory with the student’s name as content. File contents and permissions were verified using ls -l.
 
-![image alt]
+
+<img width="1042" height="588" alt="image" src="https://github.com/user-attachments/assets/182e5d61-b5d4-4db4-8c32-ed8a07056676" />
 
 
-Step 8: Copy File to Shared Directory
+# Step 8: Copy File to Shared Directory
 The file Sophia_homework was copied to /home/cyse_project, and file permissions in the shared directory were verified.
 
-![image alt]
+
+<img width="1042" height="588" alt="image" src="https://github.com/user-attachments/assets/be0e2956-e8bc-46bd-91c8-1883ceafc0ca" />
 
 
-Step 9: Access Test (Emma)
+
+# Step 9: Access Test (Emma)
 The system switched to Emma’s account to test read access to Sophia_homework in the shared directory.
 
-![image alt]
+<img width="1042" height="588" alt="image" src="https://github.com/user-attachments/assets/a21f360f-a866-4508-9c0d-9a1c250785ab" />
 
 
-Step 10: Exit User Accounts
+
+# Step 10: Exit User Accounts
 Exited Emma’s and Sophia’s accounts.
 
-![image alt]
+
+<img width="1042" height="588" alt="image" src="https://github.com/user-attachments/assets/7020846a-8e22-47a0-98c2-0b341858eea1" />
+
+
+
+## Task B: SGID Permission Configuration
+
+Step 1: Set SGID on Shared Directory
+The SGID permission was set on /home/cyse_project to ensure that files created within the directory inherit the group ownership.
+
+Step 2: Copy File with SGID Enabled
+Under Sophia’s account, Sophia_homework was copied to the shared directory as Sophia_homework2.
+
+Step 3: Access Test (Emma)
+Emma’s account was used to test read access to Sophia_homework2, confirming correct SGID behavior.
+
+Task C: Remove SGID Permissions
+
+Step 1: Unset SGID and Restrict Group Access
+SGID permissions were removed from /home/cyse_project, and group read access was restricted.
+
+Step 2: Copy File After SGID Removal
+Sophia copied Sophia_homework to the shared directory as Sophia_homework3.
+
+Step 3: Access Test (Olivia)
+Olivia attempted to read Sophia_homework3 and access was denied, confirming correct permission enforcement.
+
+Extra Credit: Sticky Bit Configuration
+
+Step 1: File Deletion Attempt (Olivia)
+Olivia attempted to delete Sophia_homework from /home/cyse_project.
+
+Step 2: Set Sticky Bit
+The sticky bit permission was enabled on /home/cyse_project to restrict file deletion to file owners or the root user.
+
+Step 3: Deletion Test with Sticky Bit
+Olivia attempted to delete Sophia_homework3 but was unsuccessful.
+
+Explanation:
+The sticky bit (t) ensures that only the file owner or root user can delete or rename files within a directory. Since Sophia_homework and Sophia_homework3 are owned by Sophia, Olivia was unable to delete them despite having write permissions on the directory.
+
 
